@@ -1,0 +1,101 @@
+{
+  "resourceType": "CapabilityStatement",
+  "id": "1",
+  "url": "urn:uuid:865e03f0-103d-4cd2-ae7f-7658e6cf4691",
+  "version": "20190618",
+  "name": "Artisan FHIR Server",
+  "title": "Artisan FHIR Server capability statement",
+  "status": "draft",
+  "experimental": true,
+  "date": "2019-06-18",
+  "publisher": "",
+  "contact": [
+    {
+      "name": "System Administrator",
+      "telecom": [
+        {
+          "system": "email",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "description": "This is the FHIR capability statement for Artisan FHIR Server.",
+  "jurisdiction": [
+    {
+      "coding": [
+        {
+          "system": "urn:iso:std:iso:3166",
+          "code": "US",
+          "display": "United States of America (the)"
+        }
+      ]
+    }
+  ],
+  "kind": "instance",
+  "implementation": {
+    "description": "Artisan FHIR Server for clinical research data."
+  },
+  "fhirVersion": "4.0.0",
+  "format": [
+    "json"
+  ],
+  "implementationGuide": [
+    "TBA"
+  ],
+  "rest": [
+    {
+      "mode": "server",
+      "documentation": "Main FHIR endpoint",
+      "security": {
+        "cors": true,
+        "service": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/restful-security-service",
+                "code": "oauth"
+              }
+            ]
+          }
+        ],
+        "description": "See OAuth documentation (Client Credentials) - https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/"
+      },
+      "resource": [
+        {
+          "type": "Observation",
+          "documentation": "This server does not let clients create observations.",
+          "interaction": [
+            {
+              "code": "read"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "conditionalCreate": false,
+          "conditionalRead": "not-supported",
+          "conditionalUpdate": false,
+          "conditionalDelete": "not-supported",
+          "searchInclude": [
+          ],
+          "searchRevInclude": [
+          ],
+          "searchParam": [
+            {
+              "name": "researchstudy",
+              "definition": "",
+              "type": "token",
+              "documentation": "Search observations by research study. This search parameter is always required when making requests."
+            }
+          ]
+        }
+      ],
+      "interaction": [
+        {
+          "code": "read"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: artisan_fhir
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: artisan_fhir
+    environment:
+      APP_DEBUG: ${APP_DEBUG}
+      APP_ENV: ${APP_ENV}
+      APP_LOG_LEVEL: ${APP_LOG_LEVEL}
+    container_name: artisan_fhir-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - artisan_fhir
+  db:
+    image: mariadb:10.5
+    container_name: artisan_fhir-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mariadb
+    networks:
+      - artisan_fhir
+    ports:
+      - 3306:3306
+    volumes:
+      - data-volume:/var/lib/mysql
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: artisan_fhir-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - artisan_fhir
+networks:
+  artisan_fhir:
+    driver: bridge
+volumes:
+  data-volume:

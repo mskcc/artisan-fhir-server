@@ -1,0 +1,139 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Artisan FHIR Server",
+        "description": "Artisan FHIR Server was built to help expose clinical research data.\n        The goals of this project are to allow third parties (e.g. clinical trial sponsors) access to\n        trial data on demand that conforms to the FHIR specification.",
+        "contact": {
+            "email": "enter_details_here"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/observations": {
+            "get": {
+                "tags": [
+                    "observations"
+                ],
+                "summary": "Finds Laboratory Results",
+                "description": "Retrieve laboratory results for a specific Research Study. This fetches a bundle of all Observation resources with laboratory categories for the specified ResearchStudy.",
+                "operationId": "observations.index",
+                "parameters": [
+                    {
+                        "name": "researchstudy",
+                        "in": "query",
+                        "description": "The Research Study to retrieve laboratory results for.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "A code that classifies the general type of lab result.",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "default": "laboratory",
+                                "enum": [
+                                    "laboratory"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "_count",
+                        "in": "query",
+                        "description": "The number of results to return.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Date(s) on which the laboratory result was collected/observed. Multiple dates can be supplied. See http://hl7.org/fhir/search.html#date",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "partner_auth": []
+                    },
+                    {
+                        "bearer_auth": []
+                    }
+                ]
+            }
+        },
+        "/api/partners": {
+            "get": {
+                "tags": [
+                    "partners"
+                ],
+                "summary": "Returns partners from the system. Supplying a partner_id parameter is required.",
+                "description": "Returns users from the system. Supplying a partner_id parameter is required.",
+                "operationId": "partners.show",
+                "parameters": [
+                    {
+                        "name": "partner_id",
+                        "in": "query",
+                        "description": "The partner ID of the user to retrieve.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": []
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_auth": {
+                "type": "http",
+                "scheme": "bearer"
+            },
+            "partner_auth": {
+                "type": "apiKey",
+                "name": "x-partnerid",
+                "in": "header"
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "More information",
+        "url": "https://www.hl7.org/fhir/observation.html"
+    },
+    "security": [
+        []
+    ]
+}
